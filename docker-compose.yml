@@ -1,0 +1,33 @@
+version: "3.5"
+services:
+  app:
+    container_name: app
+    restart: always
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - "redis"
+    depends_on:
+      - redis
+    networks:
+      - redis-net
+
+  redis:
+    container_name: redis
+    image: redis
+    restart: always
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - redis-net
+  
+networks:
+  redis-net:
+    name: redis-net
+
+volumes:
+  redis-data:
