@@ -1,15 +1,19 @@
 import os
-from flask import Flask
+from flask import Flask, jsonify
 
 def create_app(config_filename):
     app = Flask(__name__)
     app.config.from_object(config_filename)
-    
+
     from blueprints.v1.api import api_bp as v1
     app.register_blueprint(v1, url_prefix='/v1')
 
     # from api.v2.api import api_bp as v2
     # app.register_blueprint(v2_, url_prefix='/v2')
+
+    @app.errorhandler(404) 
+    def non_existant_route(error):
+        return jsonify({"message":"URL not found"}), 404
 
     return app
 

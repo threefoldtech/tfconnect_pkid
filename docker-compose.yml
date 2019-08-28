@@ -12,6 +12,8 @@ services:
       - redis
     networks:
       - redis-net
+    environment:
+      - redis-host=redis
 
   redis:
     container_name: redis

@@ -1,5 +1,5 @@
 import redis
-from .config import redis_host
+import os
 
 class Singleton(type):
     """
@@ -16,13 +16,17 @@ class Singleton(type):
 class RedisClient(object):
 
     def __init__(self):
-        self.pool = redis.ConnectionPool(host=redis_host, port=6379, db=1) #host = HOST, port = PORT, password = PASSWORD
+        self.pool = redis.ConnectionPool(host=os.environ.get('redis-host'), port=6379, db=1) #host = HOST, port = PORT, password = PASSWORD
 
     @property
     def conn(self):
-        if not hasattr(self, '_conn'):
-            self.getConnection()
-        return self._conn
+        try:
+            if not hasattr(self, '_conn'):
+                self.getConnection()
+            return self._conn
+        except:
+            return None
+
 
     def getConnection(self):
         self._conn = redis.Redis(connection_pool = self.pool)
