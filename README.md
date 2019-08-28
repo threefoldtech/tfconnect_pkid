@@ -14,6 +14,9 @@ PUT /v1/documents/{pk}/{key}
 ```
 Set the value of a document corresponding to {key} indexed by the public key {pk}. This is only possible when sending following header; signed by the secret key corresponding to {pk}.
 
+pk is hex encoded
+request data is a base64 encoded signed message
+
 ```
 { 'intent' : 'pkid.store', timestamp: 'epochtime'}
 ```
@@ -23,6 +26,7 @@ Set the value of a document corresponding to {key} indexed by the public key {pk
 ```
 GET /v1/documents/{pk}/{key}
 ```
+pk is hex encoded
 
 Get the value of a document corresponding to {key} indexed by the public key {pk}. There is no requirement for a security header
 
