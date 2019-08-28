@@ -20,7 +20,7 @@ class Documents(Resource):
             res = client.get(docKey)
 
             # response
-            return make_response(jsonify(res.decode("utf-8")), 200)
+            return make_response(jsonify(data=res.decode("utf-8")), 200)
 
         except BadRequest as e:
             return make_response(jsonify(message=e.message), e.status)
