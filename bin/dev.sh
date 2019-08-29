@@ -3,7 +3,10 @@ echo Starting
 echo make sure you have a python environment activated
 echo run: pip install -r requirements.txt
 
-export redis-env="localhost"
+if [[ ! -d "$redishost" ]]; then 
+    export redishost="localhost"
+    echo 'export redishost="localhost"' >> ~/.bashrc
+fi
 
 docker kill redis
 docker rm redis

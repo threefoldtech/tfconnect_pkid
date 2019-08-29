@@ -16,7 +16,7 @@ class Singleton(type):
 class RedisClient(object):
 
     def __init__(self):
-        self.pool = redis.ConnectionPool(host=os.environ.get('redis-host'), port=6379, db=1) #host = HOST, port = PORT, password = PASSWORD
+        self.pool = redis.ConnectionPool(host=os.environ.get('redishost'), port=6379, db=1) #host = HOST, port = PORT, password = PASSWORD
 
     @property
     def conn(self):

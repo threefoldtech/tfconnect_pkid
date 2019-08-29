@@ -10,7 +10,7 @@ services:
     depends_on:
       - redis
     environment:
-      - redis-host=redis
+      - redishost=redis
 
   redis:
     container_name: pkid_redis
