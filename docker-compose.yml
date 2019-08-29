@@ -1,36 +1,26 @@
-version: "3.5"
+version: "3.3"
 services:
-  app:
-    container_name: app
-    restart: always
-    build: .
-    ports:
-      - "8080:8080"
-    links:
-      - "redis"
-    depends_on:
-      - redis
-    networks:
-      - pkid-net
-    environment:
-      - redis-host=redis
-
-  redis:
-    container_name: redis
-    image: redis
-    restart: always
-    command: ["redis-server", "--appendonly", "yes"]
-    ports:
-      - "6379:6379"
+  3proxy:
+    image: jimber/3proxy:broker
+    container_name: jimber_proxy
+    build: ./
     volumes:
-      - pkid-data:/data
+      - /var/proxy/certs/:/certificates/
+      - /root/proxy/exampledist/dist:/var/www/3botexample
+    ports:
+     - 80:80
+     - 443:443
     networks:
-      - pkid-net
-  
+     jimber_proxy:
+       aliases:
+         - jimber_proxy
+     jimber_broker:
+       aliases:
+         - jimber_broker
 networks:
-  pkid-net:
-    name: pkid-net
-
-volumes:
-  pkid-data:
-    name: pkid-data
+    jimber_proxy:
+      external:
+        name: jimber_proxy_net
+    jimber_broker:
+      external:
+        name: jimber_broker_net
