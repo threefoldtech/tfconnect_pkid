@@ -11,7 +11,7 @@ services:
     depends_on:
       - redis
     networks:
-      - redis-net
+      - pkid-net
     environment:
       - redis-host=redis
 
@@ -23,13 +23,14 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - redis-data:/data
+      - pkid-data:/data
     networks:
-      - redis-net
+      - pkid-net
   
 networks:
-  redis-net:
-    name: redis-net
+  pkid-net:
+    name: pkid-net
 
 volumes:
-  redis-data:
+  pkid-data:
+    name: pkid-data

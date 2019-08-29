@@ -14,8 +14,8 @@ else
   echo redis image does not exist
   docker pull redis
 fi
-docker network create -d bridge redis-net
-docker run --name redis --restart=always --network="redis-net" -p 6379:6379 -d redis redis-server --appendonly yes
+docker network create -d bridge pkid-net
+docker run --name redis --restart=always --network="pkid-net" -p 6379:6379 -d redis redis-server --appendonly yes
 
 python run.py
 
