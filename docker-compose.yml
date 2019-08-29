@@ -1,35 +1,29 @@
 version: "3.5"
 services:
   app:
-    container_name: app
+    container_name: pkid
+    image: jimber/pkid:staging
     restart: always
     build: .
-    ports:
-      - "8080:8080"
     links:
       - "redis"
     depends_on:
       - redis
-    networks:
-      - pkid-net
     environment:
       - redis-host=redis
 
   redis:
-    container_name: redis
+    container_name: pkid_redis
     image: redis
     restart: always
     command: ["redis-server", "--appendonly", "yes"]
-    ports:
-      - "6379:6379"
     volumes:
       - pkid-data:/data
-    networks:
-      - pkid-net
-  
+
 networks:
-  pkid-net:
-    name: pkid-net
+  default:
+    external:
+      name: jimber_proxy_net
 
 volumes:
   pkid-data:
