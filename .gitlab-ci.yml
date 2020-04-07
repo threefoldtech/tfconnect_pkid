@@ -1,0 +1,48 @@
+image: docker:19.03.1
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+  CONTAINER_IMAGE: jimber/pkid
+  DOCKER_IMAGE: v1.3.041
+
+
+services:
+  - docker:19.03.1-dind
+
+stages:
+ - build
+ - staging
+ - deploy
+ - staging_deploy
+ - backup
+
+before_script:
+ - docker info
+ - echo $CONTAINER_IMAGE
+
+Build:
+    stage: build
+    script:
+    - docker build . -t $CONTAINER_IMAGE/production
+    #- docker push $CONTAINER_IMAGE:production
+
+
+.Staging:
+  stage: staging
+  script:
+    - docker build . -t CONTAINER_IMAGE:staging
+    - docker push CONTAINER_IMAGE:staging
+
+.Deploy:
+  stage: deploy
+  script:
+    - docker pull $CONTAINER_IMAGE:$DOCKER_IMAGE
+    - docker rm -f pkid
+    - docker-compose up -d
+
+.Staging_Deploy:
+  stage: staging_deploy
+  script:
+    - docker pull CONTAINER_IMAGE:staging
+    - docker rm -f pkid
+    - docker-compose up -d
