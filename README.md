@@ -44,3 +44,23 @@ or
 docker-compose build
 docker-compose up
 ```
+
+
+# Using PKID in combination with the Threefold Connect app - derived key scope
+
+You can let the user login using TF-Connect on your own 3rd party app, get a unique key (unique for the user and your application) and use that to write data to PKID.
+
+Flow:
+## 1. Make the user log in using TF-Connect 
+Use the example to find out how to make the user log in and get a derived seed. 
+URL for staging: https://example.staging.jimber.org/ (use 'Authenticate & get emailaddress and derived seed.' button)
+URL of example code repository: https://github.com/threefoldtech/threefold_connect/tree/master/example
+         
+## 2. Get the key from the scope
+See callback.js @ https://github.com/threefoldtech/threefold_connect/blob/master/example/src/views/callback/callback.js
+
+## 3. Write data to PKID
+Get the derived seed from the decrypted data in step 2, use the "Set document" section to write to PKID.
+
+
+
