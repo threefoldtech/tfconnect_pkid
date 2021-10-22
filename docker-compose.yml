@@ -5,6 +5,8 @@ services:
     image: jimber/pkid:staging
     restart: always
     build: .
+    ports:
+      - "8080:8080"
     links:
       - "redis"
     depends_on:
@@ -16,6 +18,8 @@ services:
     container_name: pkid_redis
     image: redis
     restart: always
+    ports:
+      - "6379:6379"
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - pkid-data:/data
