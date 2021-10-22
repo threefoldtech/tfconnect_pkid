@@ -26,5 +26,7 @@ jobs:
         run: docker pull jimber/pkid:staging-${{ github.sha }}
       - name: Killing old docker 
         run: docker rm -f pkid || true
+      - name: Setup Docker
+        run: cd app
       - name: Run the container
         run: docker-compose up -d
