@@ -23,7 +23,7 @@ services:
 networks:
   default:
     external:
-      name: jimber_proxy_net
+      name: proxy
 
 volumes:
   pkid-data:
