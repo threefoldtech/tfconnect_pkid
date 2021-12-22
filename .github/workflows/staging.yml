@@ -27,6 +27,5 @@ jobs:
       - name: Killing old docker 
         run: docker rm -f pkid || true
       - name: Testing docker
-        run: ls
-      - name: Run the container
-        run: docker compose convert
+        run: docker-compose up -d
+
