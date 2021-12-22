@@ -22,10 +22,12 @@ jobs:
     needs: build
     runs-on: whale-replacement
     steps:
-      - name: Pull the Docker image
-        run: docker pull jimber/pkid:staging-${{ github.sha }}
-      - name: Killing old docker 
-        run: docker rm -f pkid || true
-      - name: Testing docker
-        run: docker-compose up -d
+#       - name: Pull the Docker image
+#         run: docker pull jimber/pkid:staging-${{ github.sha }}
+#       - name: Killing old docker 
+#         run: docker rm -f pkid || true
+#       - name: Testing docker
+#         run: docker-compose up -d
+        - name: test
+          run: docker-compose up -d
 
