@@ -1,0 +1,34 @@
+name: production
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+"
+  
+  
+jobs:
+  build:
+    #runs-on: ubuntu-latest
+    #steps:
+    #  - uses: actions/checkout@v2
+    #  - name: Log into GitHub Container Registry
+    #    run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+    #  - name: Building PKID for Production 
+    #    run: docker build . -t jimber/pkid:production
+    #  - name: Push the Docker image
+    #    run: docker push jimber/pkid:staging-${{ github.sha }}
+        
+  deploy:
+#    needs: build
+    runs-on: whale-replacement
+    steps:
+      - name: Pull the Docker image
+        run: docker pull jimber/pkid:production
+      - name: Killing old docker 
+        run: docker rm -f pkid || true
+        
+      - name : deploy redis
+        run: docker run -d -it --restart=always --name pkid_redis -v pkid-data:/data redis redis-server --appendonly yes
+      - name : deploy app
+        run : docker run -d -it --restart=always --name pkid --link pkid_redis --env redishost=redis jimber/pkid:production
+
