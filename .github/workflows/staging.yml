@@ -29,4 +29,4 @@ jobs:
       - name: Testing docker
         run: ls
       - name: Run the container
-        run: docker-compose up -d
+        run: docker-compose up -d -f ../../docker-compose.yaml
