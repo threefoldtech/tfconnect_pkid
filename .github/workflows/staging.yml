@@ -28,6 +28,12 @@ jobs:
 #         run: docker rm -f pkid || true
 #       - name: Testing docker
 #         run: docker-compose up -d
+        - name : test
+          run : ls -alh
+        - name: test
+          run : pwd
+        - name: whoami
+          run : hostname
         - name: test
           run: docker-compose up -d
 
