@@ -22,22 +22,19 @@ jobs:
     needs: build
     runs-on: whale-replacement
     steps:
-#       - name: Pull the Docker image
-#         run: docker pull jimber/pkid:staging-${{ github.sha }}
+      - name: Pull the Docker image
+        run: docker pull jimber/pkid:staging-${{ github.sha }}
 #       - name: Killing old docker 
 #         run: docker rm -f pkid || true
 #       - name: Testing docker
 #         run: docker-compose up -d
-        - name : test
-          run : ls -alh
-        - name: test
-          run : pwd
-        - name: whoami
-          run : hostname
-        - name: clone
-          run : git clone https://github.com/threefoldtech/pkid && cd pkid
-        - name: test
-          run: docker-compose -f pkid/docker-compose.yaml up -d
-          
+#         - name: clone
+#           run : git clone https://github.com/threefoldtech/pkid
+#         - name: test
+#           run: docker-compose -f pkid/docker-compose.yaml up -d
+      - name : deploy redis
+        run: docker run -d -it --restart=always -v pkid-data:/data --network=proxy --name redis pkid_redis "redis-server --appendonly yes"
+      - name : deploy app
+        run : docker run -d -it --restart=always --name pkid jimber/pkid:staging-${{ github.sha }} -e redishost=redis
         
 
