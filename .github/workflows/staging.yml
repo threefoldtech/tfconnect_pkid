@@ -33,8 +33,8 @@ jobs:
 #         - name: test
 #           run: docker-compose -f pkid/docker-compose.yaml up -d
       - name : deploy redis
-        run: docker run -d -it --restart=always --name pkid_redis -v pkid-data:/data redis "redis-server --appendonly yes"
+        run: docker run -d -it --restart=always --name pkid_redis -v pkid-data:/data redis redis-server --appendonly yes
       - name : deploy app
-        run : docker run -d -it --restart=always --name pkid --link pkid_redis jimber/pkid:staging-${{ github.sha }} -e redishost=redis
+        run : docker run -d -it --restart=always --name pkid --link pkid_redis --env redishost=redis jimber/pkid:staging-${{ github.sha }} 
         
 
