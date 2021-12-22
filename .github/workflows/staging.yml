@@ -20,7 +20,7 @@ jobs:
         
   deploy:
     needs: build
-    runs-on: pkid-action-runner
+    runs-on: whale-replacement
     steps:
       - name: Pull the Docker image
         run: docker pull jimber/pkid:staging-${{ github.sha }}
