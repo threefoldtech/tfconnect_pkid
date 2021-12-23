@@ -29,5 +29,5 @@ jobs:
       - name : deploy redis
         run: docker run -d -it --restart=always --name pkid_redis --network 3proxynet -v pkid-data:/data redis redis-server --appendonly yes
       - name : deploy app
-        run : docker run -d -it --restart=always --name pkid  --network 3proxynet --link pkid_redis --env redishost=redis jimber/pkid:production-${{ github.sha }}
+        run : docker run -d -it --restart=always --name pkid  --network 3proxynet --link pkid_redis --env redishost=pkid_redis jimber/pkid:production-${{ github.sha }}
 
