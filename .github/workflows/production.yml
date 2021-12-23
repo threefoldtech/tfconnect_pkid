@@ -7,19 +7,20 @@ on:
   
   
 jobs:
-  #build:
-    #runs-on: ubuntu-latest
-    #steps:
-    #  - uses: actions/checkout@v2
-    #  - name: Log into GitHub Container Registry
-    #    run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-    #  - name: Building PKID for Production 
-    #    run: docker build . -t jimber/pkid:production
-    #  - name: Push the Docker image
-    #    run: docker push jimber/pkid:staging-${{ github.sha }}
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: building production
+      - uses: actions/checkout@v2
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Building PKID for Production 
+        run: docker build . -t jimber/pkid:production
+      - name: Push the Docker image
+        run: docker push jimber/pkid:staging-${{ github.sha }}
         
   deploy:
-#    needs: build
+    needs: build
     runs-on: whale-replacement
     steps:
       - name: Pull the Docker image
