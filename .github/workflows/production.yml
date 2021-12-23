@@ -26,8 +26,7 @@ jobs:
       - name: Pull the Docker image
         run: docker pull jimber/pkid:production-${{ github.sha }}
       - name: Killing old docker 
-        run: docker rm -f pkid || true
-        
+        run: docker rm -f pkid pkid_redis || true
       - name : deploy redis
         run: docker run -d -it --restart=always --name pkid_redis --network 3proxynet -v pkid-data:/data redis redis-server --appendonly yes
       - name : deploy app
