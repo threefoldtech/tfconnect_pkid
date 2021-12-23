@@ -3,7 +3,7 @@ name: production
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+"
   
   
 jobs:
@@ -17,19 +17,19 @@ jobs:
       - name: Building PKID for Production 
         run: docker build . -t jimber/pkid:production
       - name: Push the Docker image
-        run: docker push jimber/pkid:staging-${{ github.sha }}
+        run: docker push jimber/pkid:production-${{ github.sha }}
         
   deploy:
     needs: build
     runs-on: whale-replacement
     steps:
       - name: Pull the Docker image
-        run: docker pull jimber/pkid:production
+        run: docker pull jimber/pkid:production-${{ github.sha }}
       - name: Killing old docker 
         run: docker rm -f pkid || true
         
       - name : deploy redis
         run: docker run -d -it --restart=always --name pkid_redis --network 3proxynet -v pkid-data:/data redis redis-server --appendonly yes
       - name : deploy app
-        run : docker run -d -it --restart=always --name pkid  --network 3proxynet --link pkid_redis --env redishost=redis jimber/pkid:production
+        run : docker run -d -it --restart=always --name pkid  --network 3proxynet --link pkid_redis --env redishost=redis jimber/pkid:production-${{ github.sha }}
 
