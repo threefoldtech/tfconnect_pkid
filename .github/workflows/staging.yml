@@ -24,17 +24,9 @@ jobs:
     steps:
       - name: Pull the Docker image
         run: docker pull jimber/pkid:staging-${{ github.sha }}
-#       - name: Killing old docker 
-#         run: docker rm -f pkid || true
-#       - name: Testing docker
-#         run: docker-compose up -d
-#         - name: clone
-#           run : git clone https://github.com/threefoldtech/pkid
-#         - name: test
-#           run: docker-compose -f pkid/docker-compose.yaml up -d
       - name : deploy redis
-        run: docker run -d -it --restart=always --name pkid_redis -v pkid-data:/data redis redis-server --appendonly yes
+        run: docker run -d -it --restart=always --name pkid_redis --network=3proxynet -v pkid-data:/data redis redis-server --appendonly yes
       - name : deploy app
-        run : docker run -d -it --restart=always --name pkid --link pkid_redis --env redishost=redis jimber/pkid:staging-${{ github.sha }} 
+        run : docker run -d -it --restart=always --name pkid --network=3proxynet --link pkid_redis --env redishost=redis jimber/pkid:staging-${{ github.sha }} 
         
 
