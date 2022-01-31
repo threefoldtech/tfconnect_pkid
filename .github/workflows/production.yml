@@ -48,4 +48,4 @@ jobs:
           echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
           cat ${HOME}/.kube/config
       - name: Upgrade production on cluster
-        run: helm upgrade pkid helm_files -f helm_files/pkid/valuesProduction.yaml --set image.tag=production-${{ github.sha }} -n jimber
+        run: helm upgrade pkid helm_files -f helm_files/valuesProduction.yaml --set image.tag=production-${{ github.sha }} -n jimber
