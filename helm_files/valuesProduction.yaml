@@ -1,0 +1,21 @@
+# Default values for 3botlogin.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+environment: prod
+
+image:
+  name: pkid-prod
+  tag: production-27695306369d1215f425bac7027b37047f5ae6e6
+
+redisImage:
+  name: redis-prod
+  tag: latest
+
+ingress:
+  # Used to create an Ingress record.
+  hosts:
+    - name: pkid.jimber.org
+      service: pkid-prod
+      path: /
+      port: 80

@@ -1,0 +1,16 @@
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  labels:
+#    app: {{ template "releaseName" . }}
+#  name: {{ .Values.psvClaim.name }}
+#spec:
+#  storageClassName: {{ .Values.storage.className }}
+#  accessModes:
+#    - {{ .Values.psvClaim.accessModes }}
+#  resources:
+#    requests:
+#      storage: {{ .Values.psvClaim.storage }}
+#status: {}
+#
+#

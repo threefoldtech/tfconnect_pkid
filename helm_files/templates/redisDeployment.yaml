@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redis-{{ .Values.environment}}
+  name: redis-{{ .Values.environment}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-{{ .Values.environment}}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: redis-{{ .Values.environment}}
+    spec:
+      containers:
+        - name: {{ .Values.redisImage.name }}
+          image: {{ .Values.redisImage.repo }}:{{ .Values.redisImage.tag }}
+          command: ["redis-server"]
+          args: ["--appendonly", "yes"]
+          volumeMounts:
+            - mountPath: /data
+              name: pkid-data
+      restartPolicy: Always
+      volumes:
+        - name: pkid-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.psvClaim.name }}
+

@@ -18,16 +18,34 @@ jobs:
       - name: Push the Docker image
         run: docker push jimber/pkid:production-${{ github.sha }}
         
-  deploy:
-    needs: build
-    runs-on: whale-replacement
-    steps:
-      - name: Pull the Docker image
-        run: docker pull jimber/pkid:production-${{ github.sha }}
-      - name: Killing old docker 
-        run: docker rm -f pkid pkid_redis || true
-      - name : deploy redis
-        run: docker run -d -it --restart=always --name pkid_redis --network 3proxynet -v pkid-data:/data redis redis-server --appendonly yes
-      - name : deploy app
-        run : docker run -d -it --restart=always --name pkid  --network 3proxynet --link pkid_redis --env redishost=pkid_redis jimber/pkid:production-${{ github.sha }}
+  # deploy:
+  #   needs: build
+  #   runs-on: whale-replacement
+  #   steps:
+  #     - name: Pull the Docker image
+  #       run: docker pull jimber/pkid:production-${{ github.sha }}
+  #     - name: Killing old docker 
+  #       run: docker rm -f pkid pkid_redis || true
+  #     - name : deploy redis
+  #       run: docker run -d -it --restart=always --name pkid_redis --network 3proxynet -v pkid-data:/data redis redis-server --appendonly yes
+  #     - name : deploy app
+  #       run : docker run -d -it --restart=always --name pkid  --network 3proxynet --link pkid_redis --env redishost=pkid_redis jimber/pkid:production-${{ github.sha }}
 
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create kubeconfig
+        run: |
+          mkdir ${HOME}/.kube
+          echo ${{ secrets.KUBE_KEY }} | base64 --decode > ${HOME}/.kube/jimber-prod2.key
+          echo ${HOME}/.kube/jimber-prod2.key
+          echo ${{ secrets.KUBE_CRT }} | base64 --decode > ${HOME}/.kube/jimber-prod2.crt
+          echo ${HOME}/.kube/jimber-prod2.crt
+      - name: context
+        run: |
+          echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+          cat ${HOME}/.kube/config
+      - name: Upgrade production on cluster
+        run: helm upgrade pkid helm_files/pkid -f helm_files/pkid/valuesProduction.yaml --set image.tag=production-${{ github.sha }} -n jimber

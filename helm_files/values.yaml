@@ -1,0 +1,47 @@
+replicaCount: 1
+
+image:
+  repo: jimber/pkid
+  containerPort: 80
+
+redisImage:
+  repo: redis
+
+service:
+  port: 80
+  targetPort: 8080
+
+
+# ingress:
+#   # Used to create an Ingress record.
+#   hosts:
+#       # default paths for "/" and "/*" will be added
+#       # path: /
+#       # port: 80
+
+value: "pkid-prod"
+
+storage:
+  type: local
+  className: manual
+  size: 200Mi
+  rights: ReadWriteOnce
+  hostpath: "/opt/pkid/"
+
+psvClaim:
+  name: pkid-pvc
+  accessModes: ReadWriteOnce
+  storage: 100Mi
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+
+acme:
+        email: laudr1997@gmail.com

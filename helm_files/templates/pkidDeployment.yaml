@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+  name: {{ template "releaseName" . }}
+spec:
+  replicas: {{ .Values.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{ template "releaseName" . }}  
+  template:
+    metadata:
+      labels:
+        app: {{ template "releaseName" . }}
+    spec:
+      containers:
+        - name: {{ .Values.image.name }}
+          image: {{ template "image" . }}
+          name: {{ template "releaseName" . }}
+          env:
+            - name: redishost
+              value: redis-prod
+      restartPolicy: Always

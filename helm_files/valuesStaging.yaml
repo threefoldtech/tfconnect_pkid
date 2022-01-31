@@ -1,0 +1,24 @@
+# Default values for 3botlogin.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+environment: staging
+
+
+
+image:
+        name: pkid-staging
+        tag: staging
+
+redisImage:
+  name: redis-staging
+  tag: latest
+
+ingress:
+  # Used to create an Ingress record.
+  hosts:
+    - name: pkid-helm-staging.jimbertesting.be
+      service: pkid-staging
+      path: /
+      port: 80
