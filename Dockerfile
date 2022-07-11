@@ -8,7 +8,7 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-COPY backup-cron /etc/cron.d/hello-cron
+COPY backup-cron /etc/cron.d/backup-cron
 RUN chmod 0644 /etc/cron.d/backup-cron
 RUN crontab /etc/cron.d/backup-cron
 RUN touch /var/log/cron.log
