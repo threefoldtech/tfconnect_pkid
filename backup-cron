@@ -1,0 +1,4 @@
+# must be ended with a new line "LF" (Unix) and not "CRLF" (Windows)
+1 0 * * * tar cvf /backup/pkid_redis_backup.tar /data && gsutil cp /backup/pkid_redis_backup.tar gs://jimber_backups/pkid_redis_backup/pkid_redis_backup-$(date +\%Y\%m\%d\%H\%M\%S).tar
+
+# An empty line is required at the end of this file for a valid cron file.
