@@ -18,7 +18,7 @@ redisImage:
 ingress:
   # Used to create an Ingress record.
   hosts:
-    - name: pkid-helm-staging.jimbertesting.be
+    - name: pkid.staging.threefold.me
       service: pkid-staging
       path: /
       port: 80
