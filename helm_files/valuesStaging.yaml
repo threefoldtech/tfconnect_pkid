@@ -9,6 +9,7 @@ environment: staging
 
 image:
         name: pkid-staging
+        repository: threefolddev/pkid
         tag: staging
 
 redisImage:
