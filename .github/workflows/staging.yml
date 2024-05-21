@@ -21,7 +21,7 @@ jobs:
       - name: Push the Docker image
         run: docker push threefolddev/pkid:staging-${{ github.sha }}
         
- deploy:
+  deploy:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
