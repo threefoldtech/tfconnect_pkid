@@ -8,7 +8,7 @@ environment: staging
 
 
 image:
-        name: pkid-staging
+        name: pkid
         repository: threefolddev/pkid
         tag: staging
 
