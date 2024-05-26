@@ -19,3 +19,7 @@ ingress:
       service: pkid-prod
       path: /
       port: 80
+    - name: pkid.threefold.me
+      service: pkid-prod
+      path: /
+      port: 80
