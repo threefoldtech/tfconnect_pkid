@@ -11,23 +11,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Log into GitHub Container Registry
-        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-      - name: Building PKID for Production 
-        run: docker build . -t jimber/pkid:staging-${{ github.sha }}
+      - name: Log into Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.TFDOCKERHUB_USERNAME }}
+          password: ${{ secrets.TFDOCKERHUB_PASSWORD }}
+      - name: Building PKID for Staging 
+        run: docker build . -t threefolddev/pkid:staging-${{ github.sha }}
       - name: Push the Docker image
-        run: docker push jimber/pkid:staging-${{ github.sha }}
+        run: docker push threefolddev/pkid:staging-${{ github.sha }}
         
   deploy:
-    needs: build
-    runs-on: jimber-staging-server
+    needs: [build]
+    runs-on: ubuntu-latest
     steps:
-      - name: Pull the Docker image
-        run: docker pull jimber/pkid:staging-${{ github.sha }}
-      - name: Killing old docker 
-        run: docker rm -f pkid pkid_redis || true
-      - name : deploy redis
-        run: docker run -d -it --restart=always --name pkid_redis --network proxy -v pkid-data:/data redis redis-server --appendonly yes
-      - name : deploy app
-        run : docker run -d -it --restart=always --name pkid  --network proxy --link pkid_redis --env redishost=pkid_redis jimber/pkid:staging-${{ github.sha }}
-
+      - uses: actions/checkout@v2
+      - name: Create kubeconfig
+        run: |
+          mkdir ${HOME}/.kube
+          echo ${{ secrets.TF_KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+      - name: Upgrade staging on cluster
+        run: helm upgrade --install pkid helm_files -f helm_files/valuesStaging.yaml --set image.tag=staging-${{ github.sha }} -n threefoldconnect-staging

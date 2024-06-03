@@ -19,5 +19,5 @@ spec:
           name: {{ template "releaseName" . }}
           env:
             - name: redishost
-              value: redis-prod
+              value: redis-{{ .Values.environment }}
       restartPolicy: Always

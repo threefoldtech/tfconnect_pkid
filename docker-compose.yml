@@ -2,7 +2,7 @@ version: "3.5"
 services:
   app:
     container_name: pkid
-    image: jimber/pkid:staging
+    image: threefolddev/pkid:staging
     restart: always
     build: .
     links:
