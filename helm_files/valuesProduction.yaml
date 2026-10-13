@@ -15,10 +15,6 @@ redisImage:
 ingress:
   # Used to create an Ingress record.
   hosts:
-    - name: pkid.jimber.org
-      service: pkid-prod
-      path: /
-      port: 80
     - name: pkid.threefold.me
       service: pkid-prod
       path: /
